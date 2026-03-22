@@ -1,40 +1,52 @@
-import python as pd
-import io
-import matplotlib.pyplot as plt
+import pandas as pd
+import os
 
-# Configurating
+# Configuring 
 base_path = '/content/drive/MyDrive/DS_data/'
-moisture_path = os.path.join(base_path, 'lfmc_observations.csv')
-fire_part1 = os.path.join(base_path, 'California_Historic_Fire_Perimeters_1516624541847049096.csv')
-fire_part2 = os.path.join(base_path, 'California_Historic_Fire_Perimeters_3836453159319713276.csv')
 
-def run_validation():
-    print("Loading datasets from Google Drive...")
-    
-    # Loading and prepping moisture data
-    moisture = pd.read_csv(moisture_path)
-    moisture['date'] = pd.to_datetime(moisture['date'])
-    # Create monthly average baseline
-    moisture['month_yr'] = moisture['date'].dt.to_period('M')
-    moisture_baseline = moisture.groupby('month_yr')['percent'].mean().reset_index()
+# Inputs: Using the files created by Step 1 and Step 2
+moisture_input = os.path.join(base_path, 'processed_fuel_moisture.csv')
+fires_input = os.path.join(base_path, 'filtered_socal_fires.csv')
 
-    # Same for fire data
-    f1 = pd.read_csv(fire_part1)
-    f2 = pd.read_csv(fire_part2)
-    fires = pd.concat([f1, f2]).drop_duplicates(subset=['OBJECTID'])
-    
-    # Cleaning dates and filtering for SoCal Units
-    fires['Alarm Date'] = pd.to_datetime(fires['Alarm Date'], errors='coerce')
-    fires['month_yr'] = fires['Alarm Date'].dt.to_period('M')
-    
-    # Relational join
-    final_data = pd.merge(fires, moisture_baseline, on='month_yr', how='left')
+# Output: The final master dataset for the project
+master_output = os.path.join(base_path, 'fire_moisture_master.csv')
 
-    # Calculating
-    # Filtering for major fires (>10,000 acres)
-    major_fires = final_data[final_data['GIS Calculated Acres'] >= 10000].dropna(subset=['percent'])
+def create_master_dataset():
+    print("Beginning Relational Join...")
     
-    # Calculating for proof of concept
+    # Loading processed components
+    if not os.path.exists(moisture_input) or not os.path.exists(fires_input):
+        print("Error: Required processed files (moisture or fires) are missing.")
+        return
+
+    moisture = pd.read_csv(moisture_input)
+    fires = pd.read_csv(fires_input)
+
+    # Aligning datatypes for join
+    # Ensuring both dataframes use the same 'Period' format for the join key
+    moisture['month_yr'] = pd.to_datetime(moisture['month_yr']).dt.to_period('M')
+    fires['month_yr'] = pd.to_datetime(fires['Alarm Date']).dt.to_period('M')
+
+    # Performing join
+    # This maps every fire event to the regional moisture level of that month
+    master_df = pd.merge(fires, moisture, on='month_yr', how='left')
+
+    # Exporting model
+    master_df.to_csv(master_output, index=False)
+    
+    # Validation logic
+    # Proving the join worked by checking the 'percent' column is populated
+    valid_records = master_df.dropna(subset=['percent'])
+    
+    print("-" * 30)
+    print(f"RELATIONAL JOIN SUCCESSFUL")
+    print(f"Master Records Created: {len(master_df)}")
+    print(f"Records with Valid Moisture Correlation: {len(valid_records)}")
+    print(f"Final Output Saved: {master_output}")
+    print("-" * 30)
+
+if __name__ == "__main__":
+    create_master_dataset()    # Calculating for proof of concept
     avg_moisture = major_fires['percent'].mean()
     pct_below_threshold = (major_fires[major_fires['percent'] <= 75].shape[0] / len(major_fires)) * 100
 
