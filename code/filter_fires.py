@@ -1,40 +1,60 @@
 import pandas as pd
 import os
 
-# Configurating
-base_path = '/content/drive/MyDrive/DS_data/'
-file1 = os.path.join(base_path, 'California_Historic_Fire_Perimeters_1516624541847049096.csv')
-file2 = os.path.join(base_path, 'California_Historic_Fire_Perimeters_3836453159319713276.csv')
-output_path = os.path.join(base_path, 'filtered_socal_fires.csv')
-
-def filter_fire_data():
-    # Loading and merging the two GIS record chunks
-    if not os.path.exists(file1) or not os.path.exists(file2):
-        print("Error: Fire perimeter source files not found in Drive.")
-        return
-
-    df1 = pd.read_csv(file1)
-    df2 = pd.read_csv(file2)
+def run():
+    """
+    Unified transformation of point A to point B, with point A being two raw state-wide CSV chunks
+    And point B being one unified parquet entity (wildfire_events)
+    """
     
-    # Merging and deduplicating based on the unique OBJECTID to ensure data integrity
-    fires = pd.concat([df1, df2]).drop_duplicates(subset=['OBJECTID'])
-
-    # Converting dates to datetime objects for temporal filtering
-    fires['Alarm Date'] = pd.to_datetime(fires['Alarm Date'], errors='coerce')
+    # Relative path for GitHub
+    data_dir = os.path.join('..', 'data')
     
-    # Defining Southern California Unit IDs (LAC=LA County, VNC=Ventura, etc.)
-    socal_units = ['LAC', 'VNC', 'SBC', 'SLU', 'BDU', 'ORC', 'RRU', 'MVU']
-
-    # Applying multi-conditional filter: Study Period + Geography
-    fires_clean = fires[(fires['Alarm Date'] >= '2005-01-01') & 
-                        (fires['Alarm Date'] <= '2019-06-30') & 
-                        (fires['Unit ID'].isin(socal_units))].copy()
-
-    # Saving filtered records
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    fires_clean.to_csv(output_path, index=False)
+    # Defining the specific filenames as they appear in /data folder
+    chunks = [
+        os.path.join(data_dir, 'California_Historic_Fire_Perimeters_1.csv'),
+        os.path.join(data_dir, 'California_Historic_Fire_Perimeters_2.csv')
+    ]
     
-    print(f"Success: {output_path} created with {len(fires_clean)} relevant fire events.")
+    # Verification Step
+    for chunk in chunks:
+        if not os.path.exists(chunk):
+            print(f"Error: Could not find {chunk}. Ensure files are in the /data directory.")
+            return
+
+    print("--- Merging and Filtering Fire Perimeters ---")
+
+    # Merging & de-duplicating
+    # Concatenates both chunks and removes records with identical OBJECTIDs
+    df = pd.concat([pd.read_csv(f) for f in chunks], ignore_index=True)
+    df = df.drop_duplicates(subset=['OBJECTID'])
+    
+    # Applying research threshold
+    # Focus specifically on fires >= 10,000 acres to define "Catastrophic Spread"
+    df = df[df['GIS Calculated Acres'] >= 10000]
+    
+    # Relational normalization
+    # Renaming raw headers to match the project's formal Data Dictionary
+    mapping = {
+        'OBJECTID': 'Fire_ID',
+        'Fire Name': 'Fire_Name',
+        'Alarm Date': 'Alarm_Date',
+        'GIS Calculated Acres': 'GIS_Acres',
+        'Unit ID': 'Unit_ID'
+    }
+    events = df[mapping.keys()].rename(columns=mapping)
+    
+    # Adding target variable for future modeling
+    events['Is_Catastrophic'] = 1
+    
+    # Saving as an optimized parquet file
+    output_path = os.path.join(data_dir, 'wildfire_events.parquet')
+    events.to_parquet(output_path, index=False)
+    
+    print(f"Success: Created {output_path} with {len(events)} records.")
+
+if __name__ == "__main__":
+    run()    print(f"Success: {output_path} created with {len(fires_clean)} relevant fire events.")
 
 if __name__ == "__main__":
     filter_fire_data()
