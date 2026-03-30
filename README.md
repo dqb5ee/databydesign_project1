@@ -9,7 +9,7 @@
 
 **DOI:** [![DOI](https://zenodo.org/badge/1188880173.svg)](https://doi.org/10.5281/zenodo.19324715)
 
-**Press Release:** [View the "Arid Edge" Announcement](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/PressRelease.md)
+**Press Release:** [View the "Arid Edge" Announcement](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/pressrelease.md)
 
 **Data:** [OneDrive Folder: Southern California Wildfire & Moisture Data](https://myuva-my.sharepoint.com/:f:/g/personal/dqb5ee_virginia_edu/IgBl82ldBtixSpBs556Z1Z_gARDRne96Iha1X__LFe-_Zz4?e=RagYNQ)
 
@@ -30,7 +30,7 @@
 
 **Press Release Headline:** The Arid Edge: New Data Model Identifies the 71% "Danger Zone" for Southern California Wildfires
 
-[**Press Release Link**](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/PressRelease.md)
+[**Press Release Link**](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/pressrelease.md)
 
 
 ## Domain Exposition
