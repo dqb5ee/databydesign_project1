@@ -14,7 +14,8 @@ This model provides a life-saving lead time by shifting the alert baseline. Our 
 ## Chart: The Santa Ana Danger Zone
 The visualization below highlights the "Danger Zone" identified by the model (the shaded red region). By overlaying the historical moisture trend (grey line) with major fire events (orange bubbles), the chart provides evidence for the 71.1% Model Risk Threshold. 
 
+<img width="1489" height="790" alt="Unknown" src="https://github.com/user-attachments/assets/d1c7dc58-0454-465d-a907-3e54d960191d" />
+
 While biological standards often focus on the 60% mark, the chart reveals that catastrophic events (sized by acreage) almost exclusively occur once moisture drops below the 71.1% red line. Note that the three largest fires in the study period -- Thomas, Zaca, and Witch -- all sit within this "Early Warning" window. This visual proof confirms that when moisture drops below 71.1%, the margin for safety is effectively gone.
 
-<img width="1489" height="790" alt="Unknown" src="https://github.com/user-attachments/assets/d1c7dc58-0454-465d-a907-3e54d960191d" />
 
