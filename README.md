@@ -1,22 +1,21 @@
 # DS 4320 Project 1: Finding the Arid Edge
 ### Optimizing Live Fuel Moisture Thresholds for Southern California Wildfire Readiness
 
-Executive Summary: Short paragraph explaining the contents of the respository in executive form
+**Executive Summary:** This repository contains a data engineering and predictive modeling pipeline designed to identify the "Arid Edge"—the critical Live Fuel Moisture (LFM) threshold at which Southern California landscapes transition from fire-resistant to explosively flammable. By integrating 10,000+ field-collected vegetation samples from the National Fuel Moisture Database with historical CAL FIRE perimeter data, the project transforms raw environmental observations into a normalized relational database using Python and DuckDB. The included analysis optimizes a "Red Line" moisture metric (75% LFM) to provide emergency agencies with a stable, biological signal for resource staging, moving beyond the volatility of wind-based alerts to mitigate "alert fatigue" and enhance proactive wildfire suppression in the Wildland-Urban Interface.
 
-Name: Avalon Bennett
+**Name:** Avalon Bennett
 
-NetID: dqb5ee
+**NetID:** dqb5ee
 
-DOI: [![DOI](https://zenodo.org/badge/1188880173.svg)](https://doi.org/10.5281/zenodo.19324715)
+**DOI:** [![DOI](https://zenodo.org/badge/1188880173.svg)](https://doi.org/10.5281/zenodo.19324715)
 
+**Press Release:** [Link to Markdown File](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/PressRelease.md)
 
-Press Release: [Link to Markdown File](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/PressRelease.md)
+**Data:** [Link to OneDrive Folder](https://myuva-my.sharepoint.com/:f:/g/personal/dqb5ee_virginia_edu/IgBl82ldBtixSpBs556Z1Z_gARDRne96Iha1X__LFe-_Zz4?e=RagYNQ)
 
-Data: [Link to OneDrive Folder](https://myuva-my.sharepoint.com/:f:/g/personal/dqb5ee_virginia_edu/IgBl82ldBtixSpBs556Z1Z_gARDRne96Iha1X__LFe-_Zz4?e=RagYNQ)
+**Pipeline:** [Link to Markdown File](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/Pipeline.md)
 
-Pipeline: [Link to Markdown File](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/Pipeline.md)
-
-License: This project is licensed under the MIT License. [Link to License File](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/License.md)
+**License:** This project is licensed under the MIT License. [Link to License File](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/License.md)
 
 
 ## Problem Definition
