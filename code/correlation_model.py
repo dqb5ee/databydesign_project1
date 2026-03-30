@@ -8,20 +8,18 @@ def run():
     It serves as the final bridge between environmental baselines and historical fire events to create a unified analytical dataset.
     """
     
-    # Defining the data directory relative to the /code folder
+    # Defining the data directory relative to the code folder
     data_dir = os.path.join('..', 'data')
     
-    # Initialize an in-memory DuckDB connection for high-performance SQL execution
+    # Initializing an in memory DuckDB connection
     con = duckdb.connect()
     
     print("--- Executing Arid Edge Relational Join ---")
 
-    # The SQL Join Logic:
-    # 1. Joins 'wildfire_events' (Fact Table) to 'unit_agency' (Dimension Table) 
-    #    via Unit_ID to normalize administrative naming.
-    # 2. Joins 'wildfire_events' to 'moisture_readings' (Fact Table) via a 
-    #    Temporal Join, matching the Alarm_Date to the regional moisture baseline 
-    #    at a Month-Year grain.
+    # SQL join logic:
+    # Joining "wildfire_events" (fact table) to 'unit_agency' (dimension table) via Unit_ID to normalize administrative naming
+    # Joining "wildfire_events" to "moisture_readings" (fact table) via a temporal join
+    # This matches Alarm_Date to the regional moisture baseline at a Month-Year level
     query = f"""
         SELECT 
             f.Fire_Name, 
@@ -37,11 +35,11 @@ def run():
         ORDER BY f.GIS_Acres DESC
     """
     
-    # Execute the relational query and convert the result set into a Pandas DataFrame
+    # Executing the relational query and convert the result set into a pandas df
     results = con.execute(query).df()
     
-    # Export the final analytical entity to Parquet
-    # This file serves as the 'Point B' result for the entire project pipeline
+    # Exporting the final analytical entity to a parquet file
+    # Serves as the end result for the pipeline
     output_path = os.path.join(data_dir, 'final_arid_edge_analysis.parquet')
     results.to_parquet(output_path, index=False)
     
