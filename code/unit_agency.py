@@ -2,23 +2,22 @@ import duckdb
 import os
 
 def run():
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(base_dir, '..', 'data')
-    
+    base_path = '/content/drive/MyDrive/DS_data/'
+
     # Defining input (raw wildfire data) and output (mapped agency data) paths
-    fire_in = os.path.join(data_dir, 'wildfire_events.parquet')
-    agency_out = os.path.join(data_dir, 'unit_agency.parquet')
-    
+    fire_in = os.path.join(base_path, 'wildfire_events.parquet')
+    agency_out = os.path.join(base_path, 'unit_agency.parquet')
+
     con = duckdb.connect()
     con.execute(f"""
             /* Extracting unique fire unit identifiers.
-               Then mapping shorthand codes to full agency names for better readability 
-               in final visualizations
+                Then mapping shorthand codes to full agency names for better readability
+                in final visualizations
             */
         COPY (
             -- Extract unique Unit_IDs and map them to full Agency Names
             SELECT DISTINCT Unit_ID,
-                CASE 
+                CASE
                   WHEN Unit_ID = 'VNC' THEN 'Ventura County Fire'
                   WHEN Unit_ID = 'LAC' THEN 'Los Angeles County Fire'
                   WHEN Unit_ID = 'SBC' THEN 'Santa Barbara County Fire'
@@ -29,8 +28,7 @@ def run():
             FROM read_parquet('{fire_in}')
         ) TO '{agency_out}' (FORMAT 'PARQUET') -- Export the mapping as a new Parquet file
     """)
-    
-    print(f"Success: Created {agency_out}")
 
-if __name__ == "__main__": 
-    run()
+    print("Entity created successfully.")
+
+run()
