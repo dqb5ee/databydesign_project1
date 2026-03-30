@@ -28,7 +28,7 @@
 
 **Motivation:** The motivation for this project is the increasing vulnerability of the Wildland-Urban Interface (WUI) and the escalating cost of emergency resource deployment. Current "Red Flag" warnings often trigger massive, expensive mobilizations that may be unnecessary, while missing the subtle environmental drying that leads to "flash fires." By providing a clearer, data-driven "Vision" of danger, this project aims to reduce resident anxiety and improve agency readiness. We are motivated by the goal of giving responders a "Head Start"—shifting the strategy from reactive firefighting to proactive, pre-emptive positioning based on a hard "Red Line" in the moisture data.
 
-**Press Release Headline:** The Arid Edge: Using Machine Learning to Pinpoint the Fuel Moisture Threshold that puts Southern California Canyons at Risk
+**Press Release Headline:** The Arid Edge: New Data Model Identifies the 71% "Danger Zone" for Southern California Wildfires
 
 [**Press Release Link**](https://github.com/dqb5ee/project-1-dqb5ee/blob/main/PressRelease.md)
 
